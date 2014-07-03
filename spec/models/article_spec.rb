@@ -1,5 +1,7 @@
 # coding: utf-8
 require 'spec_helper'
+require 'debugger'
+
 
 describe Article do
 
@@ -628,7 +630,32 @@ describe Article do
         article.should be == already_exist_article
       end
     end
+  end
+  describe "merge article" do
+    before(:each) do
+      @article1 = Factory(:article, :body => "Lorem Ipsum")
+      @user2 = Factory(:user)
+      @article2 = Factory(:article, :body => "Lorem Ipsum2", :user => @user2)
+    end
+    it "should merge the body text" do
+      
+      #debugger
+      orgbody1 = @article1.body
+      orgbody2 = @article2.body
+      merged = @article1.merge_with(@article2.id)
+      merged.body.should eq orgbody1 + orgbody2
 
+    end
+    it "should return nil if article id does not exist" do
+      merged = @article1.merge_with(99999)
+      merged.should be nil
+
+    end
+
+
+    it "should have one of the authors"
+    it "should only allow admin"
+    it "should have on of the titles"
   end
 end
 
