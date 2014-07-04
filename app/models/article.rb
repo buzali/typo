@@ -422,6 +422,7 @@ class Article < Content
     return nil unless Article.exists?(id)
     other_art = Article.find(id)
     self.body = self.body + other_art.body
+    self.save!
     other_art.comments.each {|art| art.article = self }
     other_art.destroy
     self

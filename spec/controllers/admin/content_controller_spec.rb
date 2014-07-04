@@ -671,4 +671,28 @@ describe Admin::ContentController do
 
     end
   end
+
+
+  describe "merge articles" do
+  describe 'when you are admin' do
+    before(:each) do
+      Factory(:blog)
+      @admin = Factory(:user, :profile => Factory(:profile_admin, :label => Profile::ADMIN))
+      request.session = { :user => @admin.id }
+   end
+
+    it "should call merge_with" do
+      article1 = Factory(:article)
+      article2 = Factory(:article)
+      Article.any_instance.stub(:merge_with).and_return(article1)
+      post :merge, :id => article1.id, :merge_with => article2.id
+    end
+
+    it "should do something if article does not exist" 
+  end
+
+  describe 'when you are not admin' do
+  end
+
+  end
 end

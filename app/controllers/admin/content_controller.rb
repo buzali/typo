@@ -1,4 +1,5 @@
 require 'base64'
+require 'debugger'
 
 module Admin; end
 class Admin::ContentController < Admin::BaseController
@@ -111,6 +112,17 @@ class Admin::ContentController < Admin::BaseController
       return true
     end
     render :text => nil
+  end
+
+
+  def merge
+    id = params[:id]
+    wid = params[:merge_with]
+    article = Article.find(id)
+    merged = article.merge_with(wid)
+    flash[:notice] = _('Article was successfully merged') if merged
+    flash[:error] = _("Error, you are not allowed to perform this action") unless merged
+    redirect_to :action => 'edit', :id => id
   end
 
   protected

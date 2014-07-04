@@ -639,7 +639,6 @@ describe Article do
     end
     it "should merge the body text" do
       
-      #debugger
       orgbody1 = @article1.body
       orgbody2 = @article2.body
       merged = @article1.merge_with(@article2.id)
@@ -649,13 +648,28 @@ describe Article do
     it "should return nil if article id does not exist" do
       merged = @article1.merge_with(99999)
       merged.should be nil
-
     end
 
+    it "should have one of the authors" do
+      author1 = @article1.user
+      author2 = @article2.user
+      merged = @article1.merge_with(@article2.id)
+      [author1, author2].should include(merged.user)
 
-    it "should have one of the authors"
-    it "should only allow admin"
-    it "should have on of the titles"
+    end
+    it "should have on of the titles" do
+      title1 = @article1.title
+      title2 = @article2.title
+      merged = @article1.merge_with(@article2.id)
+      [title1, title2].should include(merged.title)
+    end
+
+    it "should merge comments" do
+      comments_count = @article1.comments.count + @article2.comments.count
+      merged = @article1.merge_with(@article2.id)
+      merged.comments.count.should be comments_count
+    end
+
   end
 end
 
